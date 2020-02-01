@@ -11,8 +11,8 @@
       >
         <q-item-label
           style="letter-spacing:1px;"
-          class="text-subtitle2"
-        >Campus Ministry Office</q-item-label>
+          class="text-subtitle2 q-py-sm"
+        >Campus Ministry</q-item-label>
 
         <q-item-label
           class="text-blueGreyfire ellipsis "
@@ -61,7 +61,7 @@ export default {
   props: ['cmoList'],
   data () {
     return {
-      showExpand: true
+      showExpand: false
     }
   },
   created () {

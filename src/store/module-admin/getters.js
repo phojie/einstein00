@@ -4,6 +4,18 @@ import findIndex from 'lodash/findIndex.js'
 import forEach from 'lodash/forEach.js'
 import max from 'lodash/max.js'
 
+function getsubjectDialog (state) {
+  return state.subjectDialog.data
+}
+
+function listofCatalog (state) {
+  var dataFilter = filter(state.listofCatalog, 'keyIndex')
+  dataFilter.forEach((row, index) => {
+    row.index = index
+  })
+  return dataFilter
+}
+
 function libraryVisitor (state) {
   var allStudents = []
   var allNumberVisit = []
@@ -75,4 +87,43 @@ function series (state) {
   return state.series
 }
 
-export { libraryVisitor, series, libraryStat, studentLists, loading, loadingProgress, studentLists2, personnelLists }
+// VPAA
+
+function subjectsSchedule (state) {
+  var data = filter(state.subjectsSchedule, 'keyIndex')
+  data.forEach((row, index) => {
+    row.index = index
+  })
+  return data
+}
+
+function schoolYearAvailable (state) {
+  var listofSY = []
+  var data = filter(state.allSubjects, 'keyIndex')
+  forEach(data, function (val, key) {
+    let findsy = find(listofSY, ['schoolYear', val.schoolYear])
+    if (findsy) {
+      var myIndex = findIndex(listofSY, ['schoolYear', findsy.schoolYear])
+      listofSY[myIndex] = {
+        schoolYear: val.schoolYear,
+        numberSubject: listofSY[myIndex].numberSubject + 1
+      }
+    } else {
+      listofSY.push({
+        schoolYear: val.schoolYear,
+        numberSubject: 1
+      })
+    }
+  })
+  return listofSY
+}
+
+function allSubjects (state) {
+  var data = filter(state.allSubjects, 'keyIndex')
+  data.forEach((row, index) => {
+    row.index = index
+  })
+  return data
+}
+
+export { getsubjectDialog, listofCatalog, allSubjects, schoolYearAvailable, subjectsSchedule, libraryVisitor, series, libraryStat, studentLists, loading, loadingProgress, studentLists2, personnelLists }

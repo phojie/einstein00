@@ -296,12 +296,12 @@
                   class="col-12 text-center"
                   style="margin-top:-40px"
                 >
-                  <h2 class="text-weight-bolder text-blue-grey-9">lackLuster</h2>
+                  <h2 class="text-weight-bolder text-blue-grey-9">gist</h2>
                   <h5
                     class="text-body1 text-blue-9"
                     style="margin-top:-50px"
                   >
-                    <span class="text-italic">adjective</span> | LAK-luss-ter
+                    <span class="text-italic">noun</span> | JIST
                   </h5>
                 </div>
               </div>
@@ -309,11 +309,13 @@
               <div>
                 <q-toolbar-title class="text-h5 text-blue-9 text-bold">Definition</q-toolbar-title>
                 <p class="text-subtitle1 text-blue-grey-10">
-                  : lacking in sheen, brilliance, or vitality : dull, mediocre
+                  1 : the ground of a legal action
+                  <br>
+                  2 : the main point or part : essence
                 </p>
                 <q-toolbar-title class="q-pa-none text-h5 text-blue-9 text-bold">Example</q-toolbar-title>
                 <p class="text-subtitle1 text-blue-grey-10">
-                  In spite of its owner's hard work, the coffee shop was forced to close due to lackluster sales.
+                  I didn't catch every word, but I heard enough to get the <span class="text-italic text-primary"> gist  </span> of the conversation.
                 </p>
               </div>
             </q-card-section>

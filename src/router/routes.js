@@ -23,7 +23,13 @@ const routes = [
       },
       {
         path: '/registrarSubjects',
-        component: () => import('pages/admin/registrar/subjects.vue')
+        component: () => import('pages/admin/registrar/subjects.vue'),
+        children: [
+          {
+            path: '/schoolyear',
+            component: () => import('components/registrar/subjectsCompo/schoolYear.vue')
+          }
+        ]
       },
       {
         path: '/registrarPrograms',

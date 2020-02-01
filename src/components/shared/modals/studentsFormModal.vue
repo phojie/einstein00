@@ -1,6 +1,5 @@
 <template>
-
-  <q-card style="width: 700px; max-width: 80vw;">
+  <q-card style="width: 100%; max-width: 80vw;">
     <q-card-section class="row no-wrap">
       <div class="text-h6">
         <slot name="headerTitle"></slot>
@@ -17,16 +16,10 @@
 
     </q-card-section>
 
-    <q-card-section>
+    <q-card-section class="q-pt-none">
       <div class="row items-center ">
-        <!-- <q-form
-          autocorrect="off"
-          autocapitalize="off"
-          autocomplete="off"
-          spellcheck="false"
-        > -->
         <div class="fit row wrap justify-center  content-center">
-          <div class="col-md-6 col-xs-12 q-pr-md-lg">
+          <div class="col-md-4 col-xs-12 q-pr-md-lg">
             <q-uploader
               ref="refUploaderImage"
               label="Student Picture"
@@ -37,7 +30,7 @@
               accept="image/*"
               v-on:added="$emit('added', $event)"
             >
-              <template v-slot:list="scope">
+              <template v-slot:list>
                 <img
                   style="overflow:hidden !important; height:100%; width:100%"
                   :src="studentInformationForm.profileImgUrl"
@@ -46,7 +39,7 @@
               </template>
             </q-uploader>
           </div>
-          <div class="q-pt-xs-md q-pt-md-none col-md-6 col-xs-12 q-gutter-y-sm">
+          <div class="q-pt-xs-md q-pt-md-none col-md-5 col-xs-12 q-gutter-y-sm">
             <q-select
               autofocus
               dense
@@ -144,15 +137,14 @@
               </template>
             </q-input>
 
-            <slot name="dialogBtn"></slot>
-
+          </div>
+          <div class="col-xs-12">
+            <studentsSubject></studentsSubject>
           </div>
         </div>
-
-        <!-- </q-form> -->
-
       </div>
     </q-card-section>
+      <slot name="dialogBtn"></slot>
     <!-- <pre>{{this.studentInformationForm}}</pre> -->
     <q-inner-loading :showing="loading">
       <q-spinner-gears
@@ -166,6 +158,9 @@
 <script>
 
 export default {
+  components: {
+    'studentsSubject': require('components/students/subjectsCompo.vue').default
+  },
   props: [
     'studentInformationForm',
     'options',

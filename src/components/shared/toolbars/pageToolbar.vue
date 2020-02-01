@@ -6,7 +6,6 @@
       round
       icon="menu"
       @click="$emit('drawerHide', $event)"
-      class="lt-md"
     />
 
     <q-toolbar-title class="text-h6">

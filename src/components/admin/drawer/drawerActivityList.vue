@@ -3,7 +3,7 @@
     :value="drawerActivityList"
     :width="250"
     content-class="navNachos"
-    content-style="padding-bottom:40px;"
+    content-style="padding-bottom:40px;overflow:hidden"
   >
 
     <q-item
@@ -23,109 +23,102 @@
         class="text-h6 text-weight-bold"
         style="letter-spacing:-1px;font-family: manjari;padding-top:2px"
       >
-        Einstein Tech
+        Ckcm Tech v1.0
       </q-item-section>
 
     </q-item>
-    <q-scroll-area
-      :thumb-style="thumbStyle"
-      style="height: 90%;overflow-x:hidden"
-      :content-style="contentStyle"
-      :content-active-style="contentActiveStyle"
-     >
-      <q-list class="q-pb-md text-blueGreyfire">
-        <div class="row bg-secondary">
-          <div class="col">
-            <q-item
-              clickable
-              exact
-              to="/"
-              class="q-py-md bg-secondary"
-              active-class="text-blue-5"
-              @mouseover="inset = false"
-              @mouseleave="inset = true"
-            >
-              <q-item-section
-                avatar
-                class=""
-              >
-                <q-icon
-                  class="on-right"
-                  size="22px"
-                  name="home"
-                />
-              </q-item-section>
-              <q-item-section class="text-subtitle2">System Overview</q-item-section>
-            </q-item>
-          </div>
+      <!-- style="height: 90%;overflow-x:hidden" -->
+    <div class="row bg-secondary text-blueGreyfire">
+      <div class="col">
+        <q-item
+          clickable
+          exact
+          to="/"
+          class="q-py-md bg-secondary"
+          active-class="text-blue-5"
+          @mouseover="inset = false"
+          @mouseleave="inset = true"
+        >
+          <q-item-section
+            avatar
+            class=""
+          >
+            <q-icon
+              class="on-right"
+              size="22px"
+              name="home"
+            />
+          </q-item-section>
+          <q-item-section class="text-subtitle2">System Overview</q-item-section>
+        </q-item>
+      </div>
 
-          <q-separator
-            vertical
-            class="bg-separatorFire"
-            :inset="inset"
+      <q-separator
+        vertical
+        class="bg-separatorFire"
+        :inset="inset"
+      />
+
+      <div class="bg-secondary">
+        <q-avatar
+          v-ripple
+          @click="test"
+          @mouseover="hoverIcon = true"
+          @mouseleave="hoverIcon = false"
+          class="cursor-pointer q-mt-xs"
+        >
+          <q-icon
+            size="20px"
+            name="settings"
+            :class="hoverIcon ? 'rotate-315' : ''"
+          />
+          <q-icon
+            style="margin-left:-3px; "
+            v-if="hoverIcon || showSetting"
+            size="15px"
+            name="play_arrow"
           />
 
-          <div class="bg-secondary">
-            <q-avatar
-              v-ripple
-              @click="test"
-              @mouseover="hoverIcon = true"
-              @mouseleave="hoverIcon = false"
-              class="cursor-pointer q-mt-xs"
+          <q-menu
+            v-model="showSetting"
+            :offset="[-45,-45]"
+          >
+            <q-list
+              bordered
+              dense
+              class="q-py-sm"
             >
-              <q-icon
-                size="20px"
-                name="settings"
-                :class="hoverIcon ? 'rotate-315' : ''"
-              />
-              <q-icon
-                style="margin-left:-3px; "
-                v-if="hoverIcon || showSetting"
-                size="15px"
-                name="play_arrow"
-              />
-
-              <q-menu
-                v-model="showSetting"
-                :offset="[-45,-45]"
-              >
-                <q-list
-                  bordered
-                  dense
-                  class="q-py-sm"
-                >
-                  <q-item clickable>
-                    <q-item-section> System Settings </q-item-section>
-                  </q-item>
-                  <q-item clickable>
-                    <q-item-section> Users and permissions </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-avatar>
-            <!-- </q-btn> -->
-          </div>
-
-        </div>
-
-        <q-separator style="background-color: #404854" />
-
+              <q-item clickable>
+                <q-item-section> System Settings </q-item-section>
+              </q-item>
+              <q-item clickable>
+                <q-item-section> Users and permissions </q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-avatar>
+        <!-- </q-btn> -->
+      </div>
+    </div>
+    <q-scroll-area
+      :thumb-style="thumbStyle"
+      style="height:86%; overflow-x:hidden"
+     >
+      <q-list class="text-blueGreyfire">
+          <q-separator style="background-color: #404854" />
         <registrarList :registrarMenuList="registrarMenuList" />
-
-        <q-separator class="bg-secondaryTransSeparator" />
-
+          <q-separator class="bg-secondaryTransSeparator" />
         <libraryList :libraryMenuList="libraryMenuList" />
-
-        <q-separator class="bg-secondaryTransSeparator" />
-
+          <q-separator class="bg-secondaryTransSeparator" />
+        <cmoList :cmoList="cmoList" />
+          <q-separator class="bg-secondaryTransSeparator" />
         <dsaList :dsaList="dsaList" />
-
-        <q-separator class="bg-secondaryTransSeparator" />
-
-        <!-- <cmoList :cmoList="cmoList" /> -->
+          <q-separator class="bg-secondaryTransSeparator" />
       </q-list>
-
     </q-scroll-area>
+    <div class="column" style="height:1%" >
+      <q-btn :ripple="false" dense glossy flat class="text-caption text-blue-grey-5 q-pr-lg" no-caps>Christ the King Tech © 2020</q-btn>
+    </div>
   </q-drawer>
 </template>
 
@@ -135,8 +128,8 @@ export default {
   components: {
     'registrarList': require('./drawerListItem/registrarList.vue').default,
     'libraryList': require('./drawerListItem/libraryList.vue').default,
-    'dsaList': require('./drawerListItem/dsaList.vue').default
-    // 'cmoList': require('./drawerListItem/cmoList.vue').default
+    'dsaList': require('./drawerListItem/dsaList.vue').default,
+    'cmoList': require('./drawerListItem/cmoList.vue').default
 
   },
   data () {
@@ -193,24 +186,29 @@ export default {
           nameRoute: ''
         }
       ],
+      cmoList: [
+        {
+          title: 'Announcement',
+          avatar: 'announcement'
+          // nameRoute: '/announcementGsk'
+        },
+        {
+          title: 'GSK',
+          avatar: 'menu_book'
+          // nameRoute: '/cmoGsk'
+        },
+        {
+          title: 'Charts',
+          avatar: 'insert_chart'
+          // nameRoute: '/libraryCharts'
+        },
+        {
+          title: 'Penalties',
+          avatar: 'monetization_on'
+          // nameRoute: '/libraryCharts'
+        }
+      ],
       dsaList: [
-        // {
-        //   title: 'Voting',
-        //   avatar: 'library_books'
-        // },
-        // {
-        //   title: 'Statistics',
-        //   avatar: 'perm_contact_calendar'
-        // },
-        // {
-        //   title: 'Borrowers',
-        //   avatar: 'book'
-        // },
-        // {
-        //   title: 'Penalties',
-        //   avatar: 'monetization_on'
-        // }
-
       ]
     }
   },

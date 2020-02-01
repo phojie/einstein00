@@ -2,7 +2,7 @@
   <q-layout view="lHr LpR fff">
     <q-header
       elevated
-      class="bg-white text-blue-grey-8"
+      class="bg-indigo"
     >
       <pageToolbar
         @drawerHide="drawerActivityList = !drawerActivityList"

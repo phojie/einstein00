@@ -1,5 +1,4 @@
 <template>
-
   <q-card style="width: 900px; max-width: 90vw;">
     <q-card-section class="row no-wrap">
       <div class="text-h6">
@@ -17,7 +16,7 @@
 
     </q-card-section>
 
-    <q-card-section>
+    <q-card-section class="q-pt-none">
       <div class="row items-center ">
         <!-- <q-form
           autocorrect="off"

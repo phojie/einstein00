@@ -11,7 +11,7 @@
       >
         <q-item-label
           style="letter-spacing:1px;"
-          class="text-subtitle2"
+          class="text-subtitle2 q-py-sm"
         >DSA</q-item-label>
 
         <q-item-label

@@ -1,7 +1,6 @@
 import { fireStorage, fireDB } from 'boot/firebase'
 import Vue from 'vue'
 import capitalize from 'lodash/capitalize'
-
 // import lowerFirst from 'lodash/lowerFirst'
 
 export function getStudentLists ({ commit, state }) {
@@ -47,7 +46,7 @@ export function getStudentLists ({ commit, state }) {
 export function addStudentLists (context, payload) {
   let docRef = fireDB.collection('studentLists').doc()
   const myid = docRef.id
-  var defaultUrl = '/assets/default_profile_400x400.png'
+  var defaultUrl = '/statics/default_profile_400x400.png'
   var addStudent = new Promise(function (resolve, reject) {
     if (payload.profileImgUrl !== '') {
       var uploadTask = fireStorage
@@ -316,7 +315,7 @@ export function addPersonnelLists (context, payload) {
     .collection('Registrar/Personnel/Lists')
     .doc()
   const myid = docRef.id
-  var defaultUrl = '/assets/default_profile_400x400.png'
+  var defaultUrl = '/statics/default_profile_400x400.png'
   var addStudent = new Promise(function (resolve, reject) {
     if (payload.profileImgUrl !== '') {
       var uploadTask = fireStorage
@@ -529,4 +528,358 @@ export function updatePersonnelLists (context, payload) {
       resolve(payload.studentInfo)
     }
   })
+}
+// registrar GOD WE TRUST :)
+
+export function addSubjectSchedule (state, payload) {
+  return new Promise((resolve, reject) => {
+    let docRef = fireDB
+      .collection('VPAA/subjectSchedules/Lists/')
+      .doc()
+    let myId = docRef.id
+    docRef.set(
+      {
+        keyIndex: myId,
+        schoolYear: payload.schoolYear,
+        semester: payload.semester,
+        courseCode: payload.courseCode,
+        descriptiveTitle: capitalize(payload.descriptiveTitle),
+        units: payload.units,
+        day: capitalize(payload.day),
+        timeFrom: payload.timeFrom,
+        timeTo: payload.timeTo,
+        room: capitalize(payload.room),
+        instructorKeyIndex: payload.instructor.keyIndex
+      },
+      function (error) {
+        reject(error)
+      }
+    )
+    resolve(payload)
+  })
+}
+
+export function getSubjectSchedule (context, payload) {
+  return new Promise((resolve, reject) => {
+    fireDB
+      .collection('VPAA/subjectSchedules/Lists/')
+      .where('schoolYear', '==', payload.year)
+      .where('semester', '==', payload.semester)
+      .onSnapshot(function (snapshot) {
+        resolve()
+        snapshot.docChanges().forEach(
+          function (change) {
+            if (change.type === 'added' || change.type === 'modified') {
+              // console.log(change.doc.data())
+              context.commit('commitGetSubjectsSchedule', change.doc.data())
+            }
+            if (change.type === 'modified') {
+            }
+            if (change.type === 'removed') {
+              // console.log('Removed city: ', change.doc.data())
+              context.commit('commitDeleteSubjectsSchedule', change.doc.data())
+            }
+          },
+          function (error) {
+            // The Promise was rejected.
+            reject()
+            console.error(error)
+          }
+        )
+        resolve()
+      })
+  })
+}
+
+export function getSchoolYear (context, payload) {
+  return new Promise((resolve, reject) => {
+    fireDB
+      .collection('VPAA/subjectSchedules/Lists/')
+      .onSnapshot(function (snapshot) {
+        resolve()
+        snapshot.docChanges().forEach(
+          function (change) {
+            if (change.type === 'added' || change.type === 'modified') {
+              context.commit('commitGetSchoolYear', change.doc.data())
+            }
+            if (change.type === 'modified') {
+            }
+            if (change.type === 'removed') {
+              // console.log('Removed city: ', change.doc.data())
+              context.commit('commitDeletePersonnelLists', change.doc.data())
+            }
+          },
+          function (error) {
+            // The Promise was rejected.
+            reject()
+            console.error(error)
+          }
+        )
+        resolve()
+      })
+  })
+}
+
+// Library IN GOD WE TRUST :()
+
+export function addCatalogAction (context, payload) {
+  let docRef = fireDB.collection('Library/fIrWnYeJhM1fgkoj14gr/Catalogs').doc()
+  const myid = docRef.id
+  var defaultUrl = '/statics/default_profile_400x400.png'
+  var addStudent = new Promise(function (resolve, reject) {
+    if (payload.imgUrl === null || payload.imgUrl === '' || payload.url === undefined) {
+      docRef.set({
+        accessionNumber: payload.accessionNumber,
+        title: capitalize(payload.title),
+        author: capitalize(payload.author),
+        type: capitalize(payload.type),
+        callNumber: capitalize(payload.callNumber),
+        sublocation: capitalize(payload.sublocation),
+        isbn: capitalize(payload.isbn),
+        editedBy: capitalize(payload.editedBy),
+        published: capitalize(payload.published),
+        copyright: capitalize(payload.copyright),
+        format: capitalize(payload.format),
+        contentTypeTerm: capitalize(payload.contentTypeTerm),
+        carrierTypeTerm: capitalize(payload.carrierTypeTerm),
+        keyIndex: myid,
+        imgUrl: defaultUrl,
+        additionalInfo: payload.additionalInfo
+
+      })
+      resolve()
+    } else {
+      var uploadTask = fireStorage
+        .ref()
+        .child('Library/CatalogImages/' + myid)
+        .putString(payload.imgUrl, 'data_url')
+      uploadTask.on(
+        'state_changed',
+        function (snapshot) {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          // console.log('Upload is ' + progress + '% done')
+          if (progress === 100) {
+            context.commit('commitLoading', false)
+          } else {
+            context.commit('commitLoading', true)
+          }
+          context.commit('commitLoadingProgress', payload)
+
+          resolve()
+        },
+        function (error) {
+          // Handle unsuccessful uploads
+          console.log(error)
+          reject()
+        },
+        function () {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            docRef.set({
+              accessionNumber: payload.accessionNumber,
+              title: capitalize(payload.title),
+              author: capitalize(payload.author),
+              type: capitalize(payload.type),
+              callNumber: capitalize(payload.callNumber),
+              sublocation: capitalize(payload.sublocation),
+              isbn: capitalize(payload.isbn),
+              editedBy: capitalize(payload.editedBy),
+              published: capitalize(payload.published),
+              copyright: capitalize(payload.copyright),
+              format: capitalize(payload.format),
+              contentTypeTerm: capitalize(payload.contentTypeTerm),
+              carrierTypeTerm: capitalize(payload.carrierTypeTerm),
+              keyIndex: myid,
+              imgUrl: downloadURL,
+              additionalInfo: payload.additionalInfo
+            })
+            resolve()
+          })
+        }
+      )
+    }
+  })
+
+  var promiseProgress = new Promise(function (resolve, reject) {
+    // enter logic here
+  })
+
+  return Promise.race([addStudent, promiseProgress])
+}
+
+export function getAllCatalogAction (context) {
+  return new Promise((resolve, reject) => {
+    fireDB
+      .collection('Library/fIrWnYeJhM1fgkoj14gr/Catalogs')
+      .onSnapshot(function (snapshot) {
+        resolve()
+        snapshot.docChanges().forEach(
+          function (change) {
+            if (change.type === 'added' || change.type === 'modified') {
+              // console.log(change.doc.data())
+              context.commit('commitAllCatalogG', change.doc.data())
+            }
+            if (change.type === 'modified') {
+            }
+            if (change.type === 'removed') {
+              // console.log('Removed city: ', change.doc.data())
+              context.commit('commitDeleteCatalog', change.doc.data())
+            }
+          },
+          function (error) {
+            // The Promise was rejected.
+            reject()
+            console.error(error)
+          }
+        )
+      })
+  })
+}
+export function updateCatalogAction (context, data) {
+  let payload = data.data
+  console.log(data, payload.keyIndex)
+  let dummypayload = data.dummyData
+  let docRef = fireDB.collection('Library/fIrWnYeJhM1fgkoj14gr/Catalogs').doc(payload.keyIndex)
+  var defaultUrl = '/statics/default_profile_400x400.png'
+  var addStudent = new Promise(function (resolve, reject) {
+    if (payload.imgUrl === null || payload.imgUrl === '') {
+      console.log('1')
+      docRef.update({
+        accessionNumber: payload.accessionNumber,
+        title: capitalize(payload.title),
+        author: capitalize(payload.author),
+        type: capitalize(payload.type),
+        callNumber: capitalize(payload.callNumber),
+        sublocation: capitalize(payload.sublocation),
+        isbn: capitalize(payload.isbn),
+        editedBy: capitalize(payload.editedBy),
+        published: capitalize(payload.published),
+        copyright: capitalize(payload.copyright),
+        format: capitalize(payload.format),
+        contentTypeTerm: capitalize(payload.contentTypeTerm),
+        carrierTypeTerm: capitalize(payload.carrierTypeTerm),
+        keyIndex: payload.keyIndex,
+        imgUrl: defaultUrl,
+        additionalInfo: payload.additionalInfo
+
+      })
+      resolve()
+    } else if (payload.imgUrl === dummypayload.imgUrl) {
+      console.log('2')
+      docRef.update({
+        accessionNumber: payload.accessionNumber,
+        title: capitalize(payload.title),
+        author: capitalize(payload.author),
+        type: capitalize(payload.type),
+        callNumber: capitalize(payload.callNumber),
+        sublocation: capitalize(payload.sublocation),
+        isbn: capitalize(payload.isbn),
+        editedBy: capitalize(payload.editedBy),
+        published: capitalize(payload.published),
+        copyright: capitalize(payload.copyright),
+        format: capitalize(payload.format),
+        contentTypeTerm: capitalize(payload.contentTypeTerm),
+        carrierTypeTerm: capitalize(payload.carrierTypeTerm),
+        keyIndex: payload.keyIndex,
+        imgUrl: payload.imgUrl,
+        additionalInfo: payload.additionalInfo
+
+      })
+      resolve()
+    } else {
+      console.log('3')
+      var uploadTask = fireStorage
+        .ref()
+        .child('Library/CatalogImages/' + payload.keyIndex)
+        .putString(payload.imgUrl, 'data_url')
+      uploadTask.on(
+        'state_changed',
+        function (snapshot) {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          // console.log('Upload is ' + progress + '% done')
+          if (progress === 100) {
+            context.commit('commitLoading', false)
+          } else {
+            context.commit('commitLoading', true)
+          }
+          context.commit('commitLoadingProgress', payload)
+
+          resolve()
+        },
+        function (error) {
+          // Handle unsuccessful uploads
+          console.log(error)
+          reject()
+        },
+        function () {
+          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            docRef.update({
+              accessionNumber: payload.accessionNumber,
+              title: capitalize(payload.title),
+              author: capitalize(payload.author),
+              type: capitalize(payload.type),
+              callNumber: capitalize(payload.callNumber),
+              sublocation: capitalize(payload.sublocation),
+              isbn: capitalize(payload.isbn),
+              editedBy: capitalize(payload.editedBy),
+              published: capitalize(payload.published),
+              copyright: capitalize(payload.copyright),
+              format: capitalize(payload.format),
+              contentTypeTerm: capitalize(payload.contentTypeTerm),
+              carrierTypeTerm: capitalize(payload.carrierTypeTerm),
+              keyIndex: payload.keyIndex,
+              imgUrl: downloadURL,
+              additionalInfo: payload.additionalInfo
+            })
+            resolve()
+          })
+        }
+      )
+    }
+  })
+
+  var promiseProgress = new Promise(function (resolve, reject) {
+    // enter logic here
+  })
+
+  return Promise.race([addStudent, promiseProgress])
+}
+
+export function SubjectDialogAction (context, data) {
+  context.commit('commitSubjectDialog', data)
+}
+
+export function deleteCatalogAction (context, payload) {
+  var deleteImg = new Promise((resolve, reject) => {
+    var imgRef = fireStorage.ref().child('Library/CatalogImages/' + payload)
+    imgRef
+      .delete()
+      .then(function () {
+        resolve(payload)
+      })
+      .catch(function (error) {
+        // Uh-oh, an error occurred!
+        resolve(payload)
+        console.log(error)
+      })
+  })
+  var deleteList = new Promise((resolve, reject) => {
+    fireDB
+      .collection('Library/fIrWnYeJhM1fgkoj14gr/Catalogs')
+      .doc(payload)
+      .delete()
+      .then(function () {
+        resolve(payload)
+      })
+      .catch(function (error) {
+        reject(error)
+      })
+  })
+
+  return Promise.all([deleteImg, deleteList])
 }

@@ -196,7 +196,7 @@
 
     </q-page-sticky>
 
-    <q-dialog v-model="addStudentDialog">
+    <q-dialog v-model="addStudentDialog" >
       <studentsFormModal
         ref="studentsFormModal"
         @submitAddStudent="submitAddStudent"
@@ -212,7 +212,7 @@
         :loading="loading"
         :validations="$v.studentInformationForm"
       >
-        <template slot="headerTitle">Add Student</template>
+        <template slot="headerTitle">Add Student (Registrartion Form)</template>
         <template slot="dialogBtn">
           <q-btn
             color="primary"

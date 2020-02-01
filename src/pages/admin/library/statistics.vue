@@ -16,7 +16,7 @@
       card-style="overflow:auto !important"
       :loading="loading"
       :fullscreen.sync="isFullscreen"
-      class="text-blue-grey-9 q-pb-xl q-mt-lg"
+      class="text-blue-grey-9 q-pb-xl"
       :data="libraryStat"
       :columns="columns"
       :filter="filter"

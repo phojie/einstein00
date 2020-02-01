@@ -52,3 +52,30 @@ export function commitGetPersonnelLists (state, payload) {
 export function commitDeletePersonnelLists (state, payload) {
   Vue.delete(state.personnelLists, payload.keyIndex)
 }
+
+// registrar
+
+export function commitSubjectDialog (state, payload) {
+  state.subjectDialog = payload
+}
+
+export function commitGetSubjectsSchedule (state, payload) {
+  Vue.set(state.subjectsSchedule, payload.keyIndex, payload)
+}
+
+export function commitDeleteSubjectsSchedule (state, payload) {
+  Vue.delete(state.subjectsSchedule, payload.keyIndex)
+}
+
+export function commitGetSchoolYear (state, payload) {
+  Vue.set(state.allSubjects, payload.keyIndex, payload)
+}
+
+export function commitAllCatalogG (state, payload) {
+  Vue.set(state.listofCatalog, payload.keyIndex, payload)
+  // state.listofCatalog[payload.keyIndex] = payload
+}
+
+export function commitDeleteCatalog (state, payload) {
+  Vue.delete(state.listofCatalog, payload.keyIndex)
+}

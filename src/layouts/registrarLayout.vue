@@ -2,7 +2,7 @@
   <q-layout view="lHr LpR fff">
     <q-header
       elevated=""
-      class="bg-white text-blue-grey-8"
+      class="bg-primary "
     >
       <pageToolbar
         @drawerHide="drawerActivityList = !drawerActivityList"
@@ -34,8 +34,6 @@
 </template>
 
 <script>
-import filter from 'lodash/filter.js'
-// var filter = require('lodash/filter.js')
 
 export default {
   components: {
@@ -75,13 +73,6 @@ export default {
     }
   },
   created () {
-    var test = [
-      { 'num': 'test' },
-      { 'num': 'test2' },
-      { 'num': 'test3' }
-    ]
-
-    console.log(filter(test, ['num', 'test']))
   }
 }
 </script>

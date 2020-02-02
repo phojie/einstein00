@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="bg-secondary text-white">
-      <q-toolbar>
+      <!-- <q-toolbar>
         <q-btn flat round dense icon="subject" />
         <q-toolbar-title>Subjects</q-toolbar-title>
         <q-btn flat round dense icon="sim_card" class="q-mr-xs" />
         <q-btn flat round dense icon="gamepad" />
-      </q-toolbar>
+      </q-toolbar> -->
       <q-toolbar inset>
         <q-breadcrumbs style="font-size: 15px" active-color="white">
           <q-breadcrumbs-el to="/registrarSubjects" label="Home" icon="home" />
@@ -43,7 +43,7 @@
                       <q-item clickable @click="editAct(list)">
                         <q-item-section>Edit</q-item-section>
                       </q-item>
-                      <q-item clickable @click="deleteAct(list)">
+                      <q-item clickable @click="deleteAct(sy)">
                         <q-item-section>Delete</q-item-section>
                       </q-item>
                       <q-item clickable>
@@ -196,8 +196,40 @@ export default {
     ...mapGetters('admin', ['schoolYearAvailable'])
   },
   methods: {
-    ...mapActions('admin', ['addSubjectSchedule', 'getSchoolYear']),
+    ...mapActions('admin', ['addSubjectSchedule', 'getSchoolYear', 'deleteSyAction']),
     ...mapMutations('admin', ['commitSubjectDialog', 'commitLoading']),
+    deleteAct (data) {
+      let vm = this
+      this.$q.dialog({
+        title: 'Confirm',
+        message: `Are you sure you want to delete this School Year <span class="text-green text-weight-bolder">${data.schoolYear} - ${this.syAdd(data.schoolYear)}</span>, All Subjects attach will be permanently deleted  `,
+        cancel: true,
+        html: true
+      }).onOk(() => {
+        this.deleteSyAction(data).then(function (result) {
+          vm.$q.notify({
+            message: 'Successfully Deleted ' + data.schoolYear,
+            color: 'negative',
+            timeout: 4000,
+            icon: 'delete_sweep'
+          })
+        }, function (error) {
+          console.log(error)
+          vm.$q.notify({
+            message: 'Something is wrong, refresh the page or contact the system administrator',
+            color: 'warning',
+            timeout: 2000,
+            icon: 'warning'
+          })
+        })
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
     syAdd (data) {
       return add(parseInt(data), 1)
     },
@@ -205,7 +237,6 @@ export default {
       let vm = this
       this.commitLoading(true)
       this.getSchoolYear().then(function (result) {
-        console.log('availabe subjects loaded')
         vm.commitLoading(false)
       }, function (error) {
         console.log(error)

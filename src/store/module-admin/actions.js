@@ -1,6 +1,8 @@
 import { fireStorage, fireDB } from 'boot/firebase'
 import Vue from 'vue'
 import capitalize from 'lodash/capitalize'
+import forEach from 'lodash/forEach'
+import filter from 'lodash/filter'
 // import lowerFirst from 'lodash/lowerFirst'
 
 export function getStudentLists ({ commit, state }) {
@@ -596,7 +598,6 @@ export function getSchoolYear (context, payload) {
     fireDB
       .collection('VPAA/subjectSchedules/Lists/')
       .onSnapshot(function (snapshot) {
-        resolve()
         snapshot.docChanges().forEach(
           function (change) {
             if (change.type === 'added' || change.type === 'modified') {
@@ -606,7 +607,7 @@ export function getSchoolYear (context, payload) {
             }
             if (change.type === 'removed') {
               // console.log('Removed city: ', change.doc.data())
-              context.commit('commitDeletePersonnelLists', change.doc.data())
+              context.commit('commitDeleteSy', change.doc.data())
             }
           },
           function (error) {
@@ -882,4 +883,25 @@ export function deleteCatalogAction (context, payload) {
   })
 
   return Promise.all([deleteImg, deleteList])
+}
+
+export function deleteSyAction ({ commit, state }, payload) {
+  var deleteList = new Promise((resolve, reject) => {
+    let dataSyfilt = filter(state.allSubjects, ['schoolYear', payload.schoolYear])
+    forEach(dataSyfilt, function (value) {
+      console.log(value)
+      fireDB
+        .collection('VPAA/subjectSchedules/Lists')
+        .doc(value.keyIndex)
+        .delete()
+        .then(function () {
+          resolve(value)
+        })
+        .catch(function (error) {
+          reject(error)
+        })
+    })
+  })
+
+  return deleteList
 }

@@ -71,6 +71,10 @@ export function commitGetSchoolYear (state, payload) {
   Vue.set(state.allSubjects, payload.keyIndex, payload)
 }
 
+export function commitDeleteSy (state, payload) {
+  Vue.delete(state.allSubjects, payload.keyIndex)
+}
+
 export function commitAllCatalogG (state, payload) {
   Vue.set(state.listofCatalog, payload.keyIndex, payload)
   // state.listofCatalog[payload.keyIndex] = payload
